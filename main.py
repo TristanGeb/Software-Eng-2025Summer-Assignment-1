@@ -37,12 +37,15 @@ resources = {
 ### Complete functions ###
 
 class SandwichMachine:
-
-    def __init__(self, machine_resources):
+    #will create new dictionary to protect orginal input_resrouces values from changing
+    def __init__(self, input_resources):
         """Receives resources as input.
            Hint: bind input variable to self variable"""
-        self.machine_resources = machine_resources
-
+        self.machine_resources = {
+            "bread": input_resources["bread"],  ## slice
+            "ham": input_resources["ham"],  ## slice
+            "cheese": input_resources["cheese"],  ## ounces
+        }
     def check_resources(self, ingredients):
         """Returns True when order can be made, False if ingredients are insufficient."""
 
@@ -59,3 +62,37 @@ class SandwichMachine:
            Hint: no output"""
 
 ### Make an instance of SandwichMachine class and write the rest of the codes ###
+mySandwichMachine = SandwichMachine(resources)
+userWantsToExit = False
+while(userWantsToExit == False):
+    #get user input
+    userInput = input("What would you like?(small/medium/ large/ off/ report:")#did a quick google search ot make sure i got the syntax right
+    userRequest=0
+    """
+    0=default value\n
+    1=small\n
+    2=medium\n
+    3=large\n
+    """
+    match userInput:
+        case "small"|"Small"|"SMALL":
+            print("you requested a small sandwich")
+            userRequest = 1
+        case "medium"|"Medium"|"MEDIUM":
+            print("you requested a medium sandwich")
+            userRequest = 2
+        case "large"|"Large"|"LARGE":
+            print("you requested a large sandwich")
+            userRequest = 3
+        case "off"|"Off"|"OFF":
+            print("you entered off")
+            break
+        case "report"|"Report"|"REPORT":
+            print("you entered report")
+            continue
+        case _:
+            print(f"\"{userInput}\" is a invalid input")
+            continue
+    #only if input is large medium or small should the rest of this iteration of the loop run
+
+    #end of loop

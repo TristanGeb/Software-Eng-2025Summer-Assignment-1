@@ -77,7 +77,15 @@ class SandwichMachine:
     def transaction_result(self, coins, cost):
         """Return True when the payment is accepted, or False if money is insufficient.
            Hint: use the output of process_coins() function for cost input"""
-
+        if (coins * 100 < cost):  # if not enough coins
+            print(f"Sorry that is not enough money. you will be refunded. cost is {cost}"
+                  f" and you inserted{coins}\n")
+            return False
+        if (coins * 100 == cost):
+            print("exact amount inserted\n")
+        else:
+            print(f"here is {(coins - cost) / 100} in change\n")
+        return True
     def make_sandwich(self, sandwich_size, order_ingredients):
         """Deduct the required ingredients from the resources.
         WHY ARE SNADWICH_SIZE AND ORDER_INGREDIENTS BOTH PASSED    WHHHHHYYYYY WORLD
@@ -136,15 +144,13 @@ while(userWantsToExit == False):
         continue
 
     coinTotal = mySandwichMachine.process_coin()
+    ans=mySandwichMachine.transaction_result(coinTotal,recipes[sandwichSize]["cost"])
     #1.25$  is given as 125
-    if(coinTotal * 100 < recipes[sandwichSize]["cost"]):#if not enough coins
-        print(f"Sorry that is not enough money. you will be refunded. cost is {recipes[sandwichSize]["cost"]}"
-              f" and you inserted{coinTotal}\n")
+    if not (ans):#if not enough coins
         continue
-    if(coinTotal * 100 == recipes[sandwichSize]["cost"]):
-        print("exact amount inserted\n")
-    else:
-        print(f"here is {(coinTotal - recipes[sandwichSize]["cost"])/100} in change\n")
+
+    #make sandwich
+
 
 
     #end of loop

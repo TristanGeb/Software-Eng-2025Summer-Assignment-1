@@ -49,6 +49,7 @@ class SandwichMachine:
         """Receives resources as input.
            Hint: bind input variable to self variable"""
         self.machine_resources = {
+            #TODO loop for options in recipe dictionary/ or make it mandatory as input
             "bread": input_resources["bread"],  ## slice
             "ham": input_resources["ham"],  ## slice
             "cheese": input_resources["cheese"],  ## ounces
@@ -61,8 +62,17 @@ class SandwichMachine:
         return True
 
     def process_coins(self):
-        """Returns the total calculated from coins inserted.
+        """Returns the total calculated from coins inserted in pennies. 1.25 is returned as 125
+        this funciton also ask the user for the coins
+        funciton does not check if valid input
            Hint: include input() function here, e.g. input("how many quarters?: ")"""
+        total = 100 * input("How many dollar coins:")
+        total = total + 50 * input("How many half dollars:")
+        total = total + 25 * input("How many quarters:")
+        total = total + 10 * input("How many nickels:")
+        total = total + 5 * input("How many dimes:")
+        total = total + input("How many pennies:")
+        return total
 
     def transaction_result(self, coins, cost):
         """Return True when the payment is accepted, or False if money is insufficient.
@@ -84,6 +94,8 @@ class SandwichMachine:
 ### Make an instance of SandwichMachine class and write the rest of the codes ###
 mySandwichMachine = SandwichMachine(resources)
 userWantsToExit = False
+sandwichSize = "NA"
+
 while(userWantsToExit == False):
     #get user input
     userInput = input("What would you like?(small/medium/ large/ off/ report:")#did a quick google search ot make sure i got the syntax right
@@ -119,8 +131,20 @@ while(userWantsToExit == False):
             print(f"\"{userInput}\" is a invalid input")
             continue
     #only if input is large medium or small should the rest of this iteration of the loop run
-    if not (mySandwichMachine.check_resources(recipes[sandwichSize]["ingredients"])):
+    if not (    mySandwichMachine.check_resources(  recipes[sandwichSize]["ingredients"]  )    ):
         print("not enough resources")
         continue
-    #mySandwichMachine.check_resources()
+
+    coinTotal = mySandwichMachine.process_coin()
+    #1.25$  is given as 125
+    if(coinTotal * 100 < recipes[sandwichSize]["cost"]):#if not enough coins
+        print(f"Sorry that is not enough money. you will be refunded. cost is {recipes[sandwichSize]["cost"]}"
+              f" and you inserted{coinTotal}\n")
+        continue
+    if(coinTotal * 100 == recipes[sandwichSize]["cost"]):
+        print("exact amount inserted\n")
+    else:
+        print(f"here is {(coinTotal - recipes[sandwichSize]["cost"])/100} in change\n")
+
+
     #end of loop

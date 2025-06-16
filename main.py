@@ -1,3 +1,4 @@
+#Tristan Gebeaux
 ### Data ###
 recipes = {
     "small": {
@@ -66,39 +67,32 @@ class SandwichMachine:
         this funciton also ask the user for the coins
         funciton does not check if valid input
            Hint: include input() function here, e.g. input("how many quarters?: ")"""
-        total = 100 * input("How many dollar coins:")
-        total = total + 50 * input("How many half dollars:")
-        total = total + 25 * input("How many quarters:")
-        total = total + 10 * input("How many nickels:")
-        total = total + 5 * input("How many dimes:")
-        total = total + input("How many pennies:")
+        total = 100 * int(input("How many dollar coins:"))
+        total = total + 50 * int(input("How many half dollars:"))
+        total = total + 25 * int(input("How many quarters:"))
+        total = total + 10 * int(input("How many nickels:"))
+        total = total + 5 * int(input("How many dimes:"))
+        total = total + int(input("How many pennies:"))
         return total
 
     def transaction_result(self, coins, cost):
         """Return True when the payment is accepted, or False if money is insufficient.
            Hint: use the output of process_coins() function for cost input"""
-        if (coins * 100 < cost):  # if not enough coins
-            print(f"Sorry that is not enough money. you will be refunded. cost is {cost}"
-                  f" and you inserted{coins}\n")
+        if (coins < 100 * cost):  # if not enough coins
+            print(f"Sorry that is not enough money. you will be refunded. cost is {cost}$"
+                  f" and you inserted {coins} cents\n")
             return False
-        if (coins * 100 == cost):
+        if (coins == 100 * cost):
             print("exact amount inserted\n")
         else:
-            print(f"here is {(coins - cost) / 100} in change\n")
+            print(f"here is {(coins - cost * 100) / 100} in change\n")
         return True
     def make_sandwich(self, sandwich_size, order_ingredients):
         """Deduct the required ingredients from the resources.
-        WHY ARE SNADWICH_SIZE AND ORDER_INGREDIENTS BOTH PASSED    WHHHHHYYYYY WORLD
+        WHY ARE SNADWICH_SIZE AND ORDER_INGREDIENTS BOTH PASSED    WHHHHHYYYYY WORLD  WHAT IS YOUR REASON
         I am should only need one not both. but which is better"""
-        """match sandwich_size:
-            case "small":
-            case "medium":
-            case "large":
-            case _:
-                print("this should never run")
-                pause = input(f"error in make_sandwich\nsandwich_size=={sandwich_size}\n")
-"""
-
+        for item in order_ingredients.keys():#no need to make sure all items in order_ingredients are in present in the machine
+            self.machine_resources[item] = self.machine_resources[item] - order_ingredients[item]
 ### Make an instance of SandwichMachine class and write the rest of the codes ###
 mySandwichMachine = SandwichMachine(resources)
 userWantsToExit = False
@@ -134,6 +128,8 @@ while(userWantsToExit == False):
             break
         case "report"|"Report"|"REPORT":
             print("you entered report")
+            for item in mySandwichMachine.machine_resources.keys():
+                print(f"{item}:{mySandwichMachine.machine_resources[item]}")
             continue
         case _:
             print(f"\"{userInput}\" is a invalid input")
@@ -143,14 +139,15 @@ while(userWantsToExit == False):
         print("not enough resources")
         continue
 
-    coinTotal = mySandwichMachine.process_coin()
+    coinTotal = mySandwichMachine.process_coins()
     ans=mySandwichMachine.transaction_result(coinTotal,recipes[sandwichSize]["cost"])
     #1.25$  is given as 125
     if not (ans):#if not enough coins
         continue
 
     #make sandwich
-
+    mySandwichMachine.make_sandwich(  sandwichSize  ,  recipes[sandwichSize]["ingredients"]  )
+    print(f"Here is your {sandwichSize} sandwich. Bon appetit!")
 
 
     #end of loop
